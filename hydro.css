@@ -1,0 +1,68 @@
+@font-face {
+  src: url('./Calibri.ttf');
+  font-family: Calibri;  
+}
+
+
+h1 {
+  left: 150px;
+  text-transform: capitalize;
+  color: #003150;
+}
+
+h2 {
+  color: #003150;
+}
+
+
+h3 {
+  color: #003150;
+}
+
+
+.hydro .hydro-dashboard {
+  text-align: left;
+  font-size:14px;
+}
+
+@media (min-width: 100px) {
+  .hydro
+  {
+      /*background-image: url('./img/hogs-small.png');*/
+      background-color: #676a6c;
+      background-repeat: no-repeat;
+      background-position: left bottom;
+      background-size: cover;
+      padding-top: 15px;
+  }
+}
+
+@media (min-width: 500px) {
+  .hydro {
+    /*background-image: url('./img/hogs.png');*/
+    background-color: #676a6c;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    background-size: cover;
+    padding-top: 15px;
+  }
+}
+
+
+.hydro-dashboard .dashboard-item .dashboard-title
+{
+  background-color: inherit;
+  color: #333;
+  text-align: center;
+  padding: 10px;
+}
+
+.hydro-dashboard .dashboard-item .widget {
+  padding: 15px 0;
+  text-align: center;
+  background-color: inherit;
+}
+
+.hydro-dashboard .dashboard-item .loading {
+  padding: 10px;
+}
