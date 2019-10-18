@@ -113,15 +113,13 @@
       solar: { enabled: true, status: true }
     };
     
-    //if enabled => true, show the Tech Block and Arrow
-    //   color   => Arrow color, and ball color 
       var theTechnologies = {
-      wind: { enabled: true, status: true, color:'#a6c600' },
-      solar: { enabled: true, status: true, color:'#F28214' },
-      diesel: { enabled: true , status: true, color:'#008b91' },
-      resistor: { enabled: true, status: true,color:'#865FC5' },
-      battery: { enabled: true, status: true, color:'#F28214' },
-      flywheel: { enabled: true, status: true, color:'#4EC3EE' }
+      wind: { enabled: true, status: true, color:'red' },
+      solar: { enabled: true, status: true, color:'yellow' },
+      diesel: { enabled: true , status: true, color:'blue' },
+      resistor: { enabled: true, status: true,color:'pink' },
+      battery: { enabled: true, status: true, color:'black' },
+      flywheel: { enabled: true, status: true, color:'orange' }
     };
       
       var labs = ["wind","solar","diesel","resistor","battery","flywheel"];
@@ -162,7 +160,7 @@
       }
     }
     
-    
+      
       var width;
       var height;
       var sizes=[];
@@ -171,32 +169,19 @@
       width = document.body.clientWidth;
       height = document.body.clientHeight;
       arisi = 45;
-
-      /* 
-      * Canvas Size 
-      *   [ Width, Hight ]  , 
-      *   based on the =>  hydro-dashboard.css
-      *     grid-template-columns: 3% 12% 5% 14% 2% 10% 8% 10% 2% 14% 5% 12% 3%;
-      *     grid-template-rows: 30px 5px 90px 5px 90px 10px 35px 0px 35px 5px 90px 10px 70px 170px 10px;
-      */
-
-      sizes = [
-                   [195,0.12*height], //195px 12%  => arrow1
-                   [195,0.12*height], //195px 12%  => arrow2
-                   [arisi,0.05*height], //40px, 12%  => arrow3
-                   [arisi,0.05*height], //40px, 12%  => arrow4
-                   [arisi,0.05*height], //40px, 18%  => arrow5
-                   [arisi,0.05*height]  //40px, 18%  => arrow6
+      sizes = [[195,0.12*height], //195px 12% 
+                   [195,0.12*height], //195px 12%
+                   [arisi,0.05*height], //40px, 12%
+                   [arisi,0.05*height], //40px, 12%
+                   [arisi,0.05*height], //40px, 18%
+                   [arisi,0.05*height]  //40px, 18%
                   ];
    }
-      // Based on the Explorer's Size, to draw Canvas
+          
       getNowCanvasSize();
       
      for(var i =1;i<techno;i++){
-          //Draw Path . class="arrow techArrow1 arrow1"
           dhtml += buildHTML('canvas', { class: 'arrow path'+i ,height:sizes[i-1][0]+'px',width:sizes[i-1][1]+'px' }, "here");
-          
-          //Draw Arrow.  class="arrow path1" 
           dhtml += buildHTML('canvas', { class: 'arrow techArrow'+i+' arrow'+i ,height:sizes[i-1][0]+'px',width:sizes[i-1][1]+'px' }, "here");
           
          console.log(i);
@@ -206,10 +191,10 @@
       
       
     dhtml += buildHTML('div', { class: 'item output active' },
-        buildHTML('div', { class: 'header' }, 
+      buildHTML('div', { class: 'header' }, 
         buildHTML('div', { class: 'title' }, "Island Generation")) +
         buildHTML('div', { class: 'other' }, "") +
-        buildHTML('div', { class: 'body' },
+      buildHTML('div', { class: 'body' },
         buildHTML('div', { class: 'total' },
           buildHTML('span', { class: 'value' }, "100") +
           buildHTML('span', { class: 'units' }, "kW"))));
@@ -218,7 +203,6 @@
      
 
       dhtml += buildHTML('canvas', { class: 'arrow output-arrow outputA',height:'105px',width:'78px' }, "here");
-      dhtml += buildHTML('canvas', { class: 'arrow output-arrow pathOutPut',height:'105px',width:'78px' }, "here");
 
       
     //dhtml += buildHTML('div', { class: 'arrow output-arrow active' }, " ");
@@ -244,51 +228,33 @@
       var times = [];
         
       // arrow number: [start, end, current_state, the state of positive direction]
-      //  |
-      //  |
-      //  \
-      //   `_ _ _\
-      //         /        this is top - right, if this is positive
-      //
-      //
-      //                  Then 
-      //    /|\
-      //     |
-      //     \
-      //      `_ _ _ _     this is negative 
-      //
-      //           
                                                 // 1 - negative
                                                 // 2 - stop
                                                 // 3 - positive
        dictTF = [false, 0, true];
-       dicts = {1:['left','bottom',2,3], //Arrow1 direction
-                2:['right','bottom',2,3],
-                3:['right','bottom',2,1],
-                4:['left','bottom',2,1],
-                5:['top','right',2,3],
-                6:['top','left',2,3]
+       dicts = {1:['left','bottom',2,3,""], //Arrow1 direction
+                2:['right','bottom',2,3,""],
+                3:['right','bottom',2,1,""],
+                4:['left','bottom',2,1,""],
+                5:['top','right',2,3,""],
+                6:['top','left',2,3,""]
                };
   
            for( var i =1; i<techno;i++){
             var lab = theTechnologies[labs[i-1]];
           
             if( lab.enabled){
-                // time[i] is the clock of setInterval, because once the aimeeArrows() begin, then it will enter Loop.
-                // only can use time[i] to stop the loop.
-                
-                // Draw Arrow   times[]  1 2 3 4 5 6
-                times[i] = $('.arrow'+i).aimeeArrows(dicts[i][0], dicts[i][1], dictTF[dicts[i][2]-1], false,false, lab["color"]);
-                // Draw Path    times[]  11 12 13 14 15 16
-                times[i+10] = $('.path'+i).aimeeArrows(dicts[i][0], dicts[i][1], dictTF[dicts[i][2]-1], false,true, lab["color"]);
+                times[i] = $('.path'+i).aimeeArrows(dicts[i][0], dicts[i][1], dictTF[dicts[i][2]-1], false, lab["color"]);
+
+              //  $('.path'+i).aimeeArrows(dicts[i][0], dicts[i][1], true, false, lab["color"]);
              }
-       
+        
+              //  
           
           }
     
-      // Draw the line from "Island Generation" to "Customer Demand" Block
-      var aaa = $('.outputA').aimeeArrows('top','bottom',true, true,false, "green");
-      var aaa = $('.pathOutPut').aimeeArrows('top','bottom',true, true,true, "green");
+  
+      var aaa = $('.outputA').aimeeArrows('top','bottom',true, true, "green");
            
     $('.tech').click(function(){
       if (clickedOn){
@@ -337,20 +303,15 @@
         
        loadData(defaultConfig);
     };
-
-    //Check if there is a statement change of line.
-    //If change =>  stop || reverse
-    
     function chag(v,i,c){
-        var pro = dicts[i][3];  //get the positive state direction
-        var negtive = dicts[i][3]==3?1:3;   // get the negative state direction
-        var now = dicts[i][2];   // get Now state direction
-        var stop = 2;            // get Stop state 
-
+        var pro = dicts[i][3];
+        var negtive = dicts[i][3]==3?1:3;
+        var now = dicts[i][2];
+        var stop = 2;
+        //var next = false;
        
         
-        //Value of the Tech
-        // v < 0 ===> next direction is negative direction 
+         
         if(v<0){
             next = negtive;
         }else if(v==0){
@@ -361,17 +322,14 @@
         
         //Having changes
         if(now != next){
-           // stop the loop of draw arraw and path.
             clearInterval(times[i]);
-            clearInterval(times[i+10]);
             
             if(next == stop){
-                times[i] = $('.arrow'+i).aimeeArrows(dicts[i][0],dicts[i][1],dictTF[next-1], false,false,  c);
-                times[i+10] = $('.path'+i).aimeeArrows(dicts[i][0],dicts[i][1],dictTF[next-1], false,true,  c);
+                times[i] = $('.arrow'+i).aimeeArrows(dicts[i][0],dicts[i][1],dictTF[next-1], false,  c);
                 
             }else{
-                times[i] = $('.arrow'+i).aimeeArrows(dicts[i][0],dicts[i][1],dictTF[next-1], true,false, c);
-                times[i+10] = $('.path'+i).aimeeArrows(dicts[i][0],dicts[i][1],dictTF[next-1], true,true, c);
+                times[i] = $('.arrow'+i).aimeeArrows(dicts[i][0],dicts[i][1],dictTF[next-1], true, c);
+                
              
             }
             

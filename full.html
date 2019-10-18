@@ -5,7 +5,6 @@
   <script src="./highcharts-5.0.6.js"></script>
   <script src="./hydro-dashboard.js"></script>
   <script src="./aimee-arrows.js"></script>
-  <script src="./fireball.js"></script>
   <link rel="stylesheet" href="./hydro-dashboard.css" />
   <link rel="stylesheet" href="./hydro.css" />
 
@@ -13,16 +12,12 @@
 <body>
 <div class="hydro">
   <div id="hydro-dashboard">Loading...</div>
-    <canvas id="test" width="400" height="900"></canvas>
-    <canvas id="test-path" width="400" height="900"></canvas>
 </div>
 
 </body>
   <script>
-
       
-      //var dashboard = $("#test").aimeeArrows('top','right',true,true,"green");
-    //  var dashboard = $("#test-path").aimeeArrows('top','right',true,false,"green");
+     //var dashboard = $("#test").aimeeArrows('left','bottom');
     var dashboard = $("#hydro-dashboard").hydroDashboard('Flinders', function (c) {
       alert(c);
     });

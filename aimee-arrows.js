@@ -3,67 +3,49 @@
 
 (function ($) {
     
-    //start direction :['left', 'top', 'right'.....]
-    //end direction :['left', 'top', 'right'.....]
-    //sequence : [true - positive direction, false - reverse direction ] 
-    //no_stop : [true - stop,then no ball, only a grey path 
-    //         , false - draw all]
-    //path : [ true - this is a path, then give a color path
-    //         false - draw ball ]
-    //lcolor : the color of ball and arrow
-    $.fn.aimeeArrows = function (start, end,seq, no_stop, path, lcolor) {
+    $.fn.aimeeArrows = function (start, end,seq, no_stop, lcolor) {
 
-    lcolor = lcolor ||  "#1ab374" ;
+        lcolor = lcolor ||  "#1ab374" ;
+       // no_stop = no_stop || true;
   
       var cxt=this.get(0).getContext('2d');
       
+      //var cxt = $('#test').get(0).getContext('2d');
      /* if(cxt=this.get(0).getContext('2d')){}
       else{
           console.log('Error: Canvas not found with selector');
       }  */
       
+     
+  
+      //var cxt= $("#test")[0].getContext('2d');
+      //leftCircleStart(cxt);
+     // console.log(cxt);
   
       var h = this.get(0).height;
       var w = this.get(0).width;
-      var pathw = 3;
-      
-      //the x,y of ball position
+       //alert(2);
+       
       var x=0;
       var y=0;
-      
+      //var states = [1,2,3];
       var states = [];
       var state = -1;
-      var stateindex = 0; 
+      var stateindex = 0; //0 0 0 0 0
       var stateindexNow = stateindex;
       var time1=0;
       var time2=0;
       //var seq = false;
    
       getStates();
-      console.log(states);
         
       inifunction(states[stateindexNow],true);
    
          var i = setInterval(function(){
-
              if(no_stop==true){
-                 if(path==false){
-                    run(cxt,start,end,seq, lcolor);
-                 }else{
-                    drawPathOnly(cxt,lcolor);
-                 }
-                  
-              
-                 
+                  run(cxt,start,end,seq, lcolor);
              }else{
-                if(path==false){
-                    drawPathOnly(cxt,'grey');
-                 }else{
-                    
-                    drawPathOnly(cxt,'grey');
-                 }
-                  
-                  
+                  drawPathOnly(cxt,"grey");
              }
              
           
@@ -261,7 +243,7 @@
               
           
       }
-     
+      
       //state = 1
       function drawPathCircleleftState1(cxt){
           //draw half path
@@ -269,7 +251,7 @@
           cxt.beginPath();
           cxt.arc(0,w,w/2,0,1.5*Math.PI,1);
           cxt.strokeStyle = LineColor;
-          cxt.lineWidth = pathw;
+          cxt.lineWidth = 4;
           cxt.stroke();
           cxt.closePath();
       }
@@ -280,7 +262,7 @@
           cxt.beginPath();
           cxt.arc(w,w,w/2,0,Math.PI,1);
           cxt.strokeStyle = LineColor;
-          cxt.lineWidth = pathw;
+          cxt.lineWidth = 4;
           cxt.stroke();
           cxt.closePath();
       }
@@ -288,7 +270,7 @@
       //state = 4
       function drawPathtopdownState4(cxt){
             drawLine(w/2,w,w/2,h-w,LineColor);
-            cxt.lineWidth = pathw; 
+            cxt.lineWidth = '4'; 
       }
       
       //state = 5
@@ -297,7 +279,7 @@
           cxt.beginPath();
           cxt.arc(0,h-w,w/2,0,Math.PI,0);
           cxt.strokeStyle = LineColor;
-          cxt.lineWidth = pathw;
+          cxt.lineWidth = 4;
           cxt.stroke();
           cxt.closePath();
       }
@@ -305,7 +287,7 @@
       //state = 6
         function drawPathtopdownState6(cxt){
             drawLine(w/2,h-w,w/2,h,LineColor);
-            cxt.lineWidth = pathw; 
+            cxt.lineWidth = 4; 
         }
         
       //state = 7
@@ -314,7 +296,7 @@
           cxt.beginPath();
           cxt.arc(w,h-w,w/2,0,Math.PI,0);
           cxt.strokeStyle = LineColor;
-          cxt.lineWidth = pathw;
+          cxt.lineWidth = '4';
           cxt.stroke();
           cxt.closePath();
       }
@@ -322,45 +304,36 @@
       //state = 8 & 9
         function drawPathLeftToRightState8State9(cxt){
             drawLine(0,h/2,w,h/2,LineColor);
-            cxt.lineWidth = pathw;  
+            cxt.lineWidth = '4';  
         }
         
       //state = 10
         function drawPathtopdownState10(cxt){
             drawLine(w/2,0,w/2,h-w,LineColor);
-            cxt.lineWidth = pathw;  
+            cxt.lineWidth = '4';  
         }
         
         //state = 11
         function drawPathtopdownState11(cxt){
             drawLine(w/2,w,w/2,h, LineColor);
-            cxt.lineWidth = pathw;  
+            cxt.lineWidth = '4';  
         }
         
-        
-        
-
-
-        
-        
       function leftCircleStart(cxt){
-          //cxt.save();
+          cxt.save();
           cxt.fillStyle='white';
           cxt.beginPath();
+          cxt.translate(0,w); 
+          //draw ball
+       
+              cxt.rotate(time1*Math.PI/180);
+              cxt.arc(0,-w/2,5,0,2*Math.PI,false);
+      
           
-          r = w/2;
           
-          degree = time1* Math.PI/180 ;
-
-          x = r*Math.sin(degree);
-          y = w-r*Math.cos(degree);
-          
-  
-         // cxt.arc(x,y,5,0,2*Math.PI,false);
-         
           cxt.closePath();
           cxt.fill();
-         // cxt.restore();
+          cxt.restore();
         }
         
         
@@ -369,64 +342,55 @@
           cxt.fillStyle='white';
           cxt.beginPath();
           
-          //cxt.arc(x,y,5,0,2*Math.PI,false);
-          
+          cxt.arc(x,y,5,0,2*Math.PI,false);
           cxt.closePath();
           cxt.fill();
         }
             
         function rightCircleStart(cxt){
-         
+          cxt.save();
           cxt.fillStyle='white';
           cxt.beginPath();
-        
-         r = w/2;
-          
-          degree = time1* Math.PI/180 ;
-          
-
-          x = w - r*Math.sin(degree);
-          y = w - r*Math.cos(degree);
-          
+          cxt.translate(w,w); 
+  
+                cxt.rotate(-time1*Math.PI/180);
+                cxt.arc(0,-w/2,5,0,2*Math.PI,false); 
+  
           cxt.closePath();
           cxt.fill();
-         
+          cxt.restore();
         }
     
             
         function leftCircleEnd(cxt){
-           
-          r = w/2;
-          
-          degree = time2* Math.PI/180 ;
-          
-
-          x = r*Math.cos(degree);
-          y = h-w + r*Math.sin(degree);
-
-          
-         cxt.fillStyle='white';
+          cxt.save();
+          cxt.fillStyle='white';
           cxt.beginPath();
+          cxt.translate(0,h-w); 
+  
+                cxt.rotate(time2*Math.PI/180);
+                cxt.arc(w/2,0,5,0,2*Math.PI,false);
+  
           cxt.closePath();
           cxt.fill();
-         
+          cxt.restore();
      
         }
             
         function rightCircleEnd(cxt){
-                   
+            
+          cxt.save();
           cxt.fillStyle='white';
           cxt.beginPath();
-
-          r = w/2;
+          cxt.translate(w,h-w);  
+  
+              cxt.rotate(-time2*Math.PI/180);
+              cxt.arc(-w/2,0,5,0,2*Math.PI,false);
+  
           
-           degree = time2* Math.PI/180 ; 
-
-          x = w-r*Math.cos(degree);
-          y = h-w+ r*Math.sin(degree);
-
           cxt.closePath();
           cxt.fill();
+          cxt.restore();
      
         }
         
@@ -489,25 +453,29 @@
           
           state = states[stateindexNow];
           LineColor=lcolor;
-          //drawPath(cxt); 
+          drawPath(cxt); 
           
           function gof(){
                            stateindex++;
                            stateindexNow = stateindex%(states.length);
-                           inifunction(states[stateindexNow],seq);      
+                           inifunction(states[stateindexNow],seq);
+                       
+                       
           }
             
           function returnf(){
                            stateindex++;
                            stateindexNow = states.length-1-stateindex%(states.length);  
-                           inifunction(states[stateindexNow],seq);           
+                           inifunction(states[stateindexNow],seq);
+                       
+                      
           }
-         
+            
          //half circle
          if(state == 1 ){
-            
+             
              leftCircleStart(cxt);
-           
+             
               if(seq){
                   if(time1<90){
                        time1+=1;
@@ -619,10 +587,9 @@
          if(state == 6 ){
              topDown(cxt); 
             // drawPathtopdownState6(cxt);
-            //infoButtonClick(cxt,h,w,y,x);
             if(seq){
                  if(y<h){
-                   y+=2;
+                   y+=1;
                   }else{
                        gof();
                   }
@@ -635,13 +602,11 @@
                   }
                
             }
-           
               
          }
              
          if(state == 7 ){
              rightCircleEnd(cxt);
-            // infoButtonClick(cxt,h,w,y,x);
             
             // drawPathCirclerightState7(cxt);
             if(seq){
@@ -667,7 +632,6 @@
          if(state == 8 ){
              
              topDown(cxt);
-            // infoButtonClick(cxt,h,w,y,x);
             // drawPathLeftToRightState8State9(cxt);
              if(seq){
                  if(x<w){
@@ -688,7 +652,6 @@
          if(state == 9 ){
              
              topDown(cxt);
-           //  infoButtonClick(cxt,h,w,y,x);
             // drawPathLeftToRightState8State9(cxt);
              if(seq){
                  if(x>0){
@@ -710,7 +673,6 @@
          if(state == 10 ){
             // drawPathtopdownState10(cxt);
              topDown(cxt);
-            // infoButtonClick(cxt,h,w,y,x);
              if(seq){
                  if(y<h-w){
                        y+=1;
@@ -732,7 +694,6 @@
          if(state == 11 ){
             // drawPathtopdownState11(cxt);
              topDown(cxt);
-            // infoButtonClick(cxt,h,w,y,x);
              if(seq){
                  if(y<h){
                    y+=1;
@@ -748,16 +709,77 @@
                   }
                  
              }
-             
+              
          }
-         infoButtonClick(cxt,h,w,y,x, lcolor);
+            
          
-         cxt.fillStyle='#d88d4e';
-          cxt.beginPath();
-          cxt.arc(x,y,2,0,2*Math.PI,false);
-          cxt.closePath();
-          cxt.fill();
-
+         /*
+         function leftCircleStart(cxt){
+           cxt.save();
+           cxt.fillStyle='blue';
+           cxt.beginPath();
+           cxt.translate(0,w);  
+           cxt.rotate(time1*Math.PI/180);
+           cxt.arc(0,-w/2,5,0,2*Math.PI,false);
+           cxt.closePath();
+           cxt.fill();
+           cxt.restore();
+      
+         }
+         
+         function topDown(cxt){
+           cxt.fillStyle='blue';
+           cxt.beginPath();
+           cxt.arc(x,y,5,0,2*Math.PI,false);
+           cxt.closePath();
+           cxt.fill();
+         }
+             
+         function rightCircleStart(cxt){
+           cxt.save();
+           cxt.fillStyle='blue';
+           cxt.beginPath();
+           cxt.translate(w,w);  
+           cxt.rotate(-time1*Math.PI/180);
+           cxt.arc(0,-w/2,5,0,2*Math.PI,false); 
+           cxt.closePath();
+           cxt.fill();
+           cxt.restore();
+         }
+     
+             
+         function leftCircleEnd(cxt){
+           cxt.save();
+           cxt.fillStyle='blue';
+           cxt.beginPath();
+           cxt.translate(0,h-w);  
+           cxt.rotate(time2*Math.PI/180);
+           cxt.arc(w/2,0,5,0,2*Math.PI,false);
+           cxt.closePath();
+           cxt.fill();
+           cxt.restore();
+      
+         }
+             
+         function rightCircleEnd(cxt){
+           cxt.save();
+           cxt.fillStyle='blue';
+           cxt.beginPath();
+           cxt.translate(w,h-w);  
+           cxt.rotate(-time2*Math.PI/180);
+           cxt.arc(-w/2,0,5,0,2*Math.PI,false);
+           cxt.closePath();
+           cxt.fill();
+           cxt.restore();
+      
+         }
+           
+           cxt.shadowOffsetX = 0;
+            cxt.shadowOffsetY = -15;
+            cxt.shadowColor = 'rgba(0,0,255,0.2)';
+            cxt.shadowBlur = 10; 
+           
+           */ 
              
              
        
